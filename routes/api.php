@@ -17,3 +17,10 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+//Menu
+Route::get('/menu', 'App\Http\Controllers\Admin\MenuController@getAll');
+
+//Order
+Route::post('/order', 'App\Http\Controllers\Admin\OrderController@storeOrder');

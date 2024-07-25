@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 
@@ -33,85 +33,85 @@ Route::namespace("Admin")
             "dashboard.data"
         );
 
-        //KRITERIA
-        Route::get("/admin/kriteria", "KriteriaController@index")->name(
-            "kriteria"
+        //table
+        Route::get("/admin/table", "TableController@index")->name(
+            "table"
         );
-        Route::post("/admin/kriteria/store", "KriteriaController@store")->name(
-            "kriteria.store"
+        Route::post("/admin/table/store", "TableController@store")->name(
+            "table.store"
         );
-        Route::get("/admin/kriteria/{id}", "KriteriaController@find")->name(
-            "kriteria.find"
+        Route::get("/admin/table/{id}", "TableController@find")->name(
+            "table.find"
         );
-        Route::post("/admin/kriteria/update/{id}", "KriteriaController@update")->name(
-            "kriteria.update"
+        Route::post("/admin/table/update/{id}", "TableController@update")->name(
+            "table.update"
         );
-        Route::delete("/admin/kriteria/{id}", "KriteriaController@destroy")->name(
-            "kriteria.destroy"
-        );
-
-        //PERTANYAAN
-        Route::get("/admin/pertanyaan", "PertanyaanController@index")->name(
-            "pertanyaan"
-        );
-        Route::post("/admin/pertanyaan/store", "PertanyaanController@store")->name(
-            "pertanyaan.store"
-        );
-        Route::get("/admin/pertanyaan/{id}", "PertanyaanController@find")->name(
-            "pertanyaan.find"
-        );
-        Route::post("/admin/pertanyaan/update/{id}", "PertanyaanController@update")->name(
-            "pertanyaan.update"
-        );
-        Route::delete("/admin/pertanyaan/{id}", "PertanyaanController@destroy")->name(
-            "pertanyaan.destroy"
+        Route::delete("/admin/table/{id}", "TableController@destroy")->name(
+            "table.destroy"
         );
 
-        //RESPONDEN
-        Route::get("/admin/responden", "RespondenController@index")->name(
-            "responden"
+        //menu
+        Route::get("/admin/menu", "MenuController@index")->name(
+            "menu"
+        );
+        Route::post("/admin/menu/store", "MenuController@store")->name(
+            "menu.store"
+        );
+        Route::get("/admin/menu/{id}", "MenuController@find")->name(
+            "menu.find"
+        );
+        Route::post("/admin/menu/update/{id}", "MenuController@update")->name(
+            "menu.update"
+        );
+        Route::delete("/admin/menu/{id}", "MenuController@destroy")->name(
+            "menu.destroy"
         );
 
-        Route::delete("/admin/responden/{id}", "RespondenController@destroy")->name(
-            "responden.destroy"
+        //order
+        Route::get("/admin/order", "OrderController@index")->name(
+            "order"
         );
 
-        Route::get("/admin/responden/jawaban", "RespondenController@jawaban")->name(
-            "responden.jawaban"
+        Route::post("/admin/order/store", "OrderController@store")->name(
+            "order.store"
         );
 
-        //IPA
-        Route::get("/admin/ipa/tingkat-kesesuaian", "TingkatKesesuaianController@index")->name(
-            "ipa.tingkat-kesesuaian"
+        Route::get("/admin/order/{id}", "OrderController@find")->name(
+            "order.find"
         );
 
-        Route::get("/admin/ipa/rata-rata", "RataRataController@index")->name(
-            "ipa.rata-rata"
-        );
-        Route::get("/admin/ipa/total-rata-rata", "RataRataController@total")->name(
-            "ipa.rata-rata.total"
+        Route::delete("/admin/order/{id}", "OrderController@destroy")->name(
+            "order.destroy"
         );
 
-        Route::get("/admin/ipa/keseluruhan-rata-rata", "KeseluruhanRataRataController@index")->name(
-            "ipa.keseluruhan-rata-rata"
+        Route::get("/admin/order/print/{id}", "OrderController@printOrder")->name(
+            "order.print"
         );
 
-        Route::get("/admin/ipa/pemetaan-atribut", "PemetaanAtributController@index")->name(
-            "ipa.pemetaan-atribut"
+
+        //menu
+        Route::get("/admin/reservation", "ReservationController@index")->name(
+            "reservation"
+        );
+        Route::post("/admin/reservation/store", "ReservationController@store")->name(
+            "reservation.store"
+        );
+        Route::get("/admin/reservation/{id}", "ReservationController@find")->name(
+            "reservation.find"
+        );
+        Route::post("/admin/reservation/update/{id}", "ReservationController@update")->name(
+            "reservation.update"
+        );
+        Route::delete("/admin/reservation/{id}", "ReservationController@destroy")->name(
+            "reservation.destroy"
         );
 
-        Route::get("/admin/ipa/chart", "ChartController@index")->name(
-            "ipa.chart"
+        Route::get("/admin/reservation/print/{id}", "ReservationController@printReservation")->name(
+            "reservation.print"
         );
-        Route::get('/admin/ipa/chart/data', 'ChartController@filterMonth')->name('ipa.chart.data');
     });
 
 
-Route::name('guest.')->prefix("responden")->namespace("Responden")->group(function () {
-    Route::get("/pertanyaan", "PertanyaanController@index")->name("pertanyaan");
-    Route::get('/pertanyaan/{id}/{direction}', 'PertanyaanController@showQuestion')->name('ambil.pertanyaan');
-    Route::post('/pertanyaan/submit', 'PertanyaanController@submitQuestion')->name('submit.pertanyaan');
-});
 
 
 Route::group(

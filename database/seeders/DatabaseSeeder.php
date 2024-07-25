@@ -20,10 +20,5 @@ class DatabaseSeeder extends Seeder
             'username' => 'admin-ac',
             'password' => bcrypt('password'),
         ]);
-
-        $this->call([
-            KriteriaSeeder::class,
-            PertanyaanSeeder::class,
-        ]);
     }
 }

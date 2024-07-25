@@ -11,7 +11,7 @@
 @section('content')
 
 <div class="row">
-    <div class="col-8">
+    <div class="col-12">
         <div class="card">
             <div class="form-group  px-3 py-3" style="width: 30%;">
                 <label for="filter_bulan" class="mb-2 "><strong>Filter Data</strong></label>
@@ -160,66 +160,7 @@
 
         </div>
     </div>
-    <div class="col-4">
-        <div class="card-body pb-0">
-            <h5 class="card-title">Jenis Kelamin <span>| Semua</span></h5>
 
-            <div id="trafficChart" style="min-height: 400px;" class="echart"></div>
-
-            <script>
-                document.addEventListener("DOMContentLoaded", () => {
-                    var man = @json($man);
-                    var woman = @json($woman);
-
-                    echarts.init(document.querySelector("#trafficChart")).setOption({
-                        tooltip: {
-                            trigger: 'item'
-                        },
-                        legend: {
-                            top: '5%',
-                            left: 'center'
-                        },
-                        colors: ['#FEC8D8', '#FEC8D8', '#ff771d'],
-                        series: [{
-                            name: 'Jenis Kelamin',
-                            type: 'pie',
-                            color: [
-                                '#9FE6B8',
-                                '#ff9f7f',
-                            ],
-                            radius: ['40%', '70%'],
-                            avoidLabelOverlap: false,
-                            label: {
-                                show: false,
-                                position: 'center'
-                            },
-                            emphasis: {
-                                label: {
-                                    show: true,
-                                    fontSize: '18',
-                                    fontWeight: 'bold'
-                                }
-                            },
-                            labelLine: {
-                                show: false
-                            },
-                            data: [{
-                                    value: man,
-                                    name: 'Laki-laki'
-                                },
-                                {
-                                    value: woman,
-                                    name: 'Perempuan'
-                                },
-
-                            ]
-                        }]
-                    });
-                });
-            </script>
-
-        </div>
-    </div>
 </div>
 
 @endsection
