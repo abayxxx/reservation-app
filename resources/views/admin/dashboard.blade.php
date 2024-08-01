@@ -17,18 +17,18 @@
                 <label for="filter_bulan" class="mb-2 "><strong>Filter Data</strong></label>
                 <select name="filter_bulan" id="filter_bulan" class="form-control form-control-md">
                     <option value="0" disabled selected>-- Bulan --</option>
-                    <option value="2023-01">Januari - {{now()->format('Y')}}</option>
-                    <option value="2023-02">Februari - {{now()->format('Y')}}</option>
-                    <option value="2023-03">Maret - {{now()->format('Y')}}</option>
-                    <option value="2023-04">April - {{now()->format('Y')}}</option>
-                    <option value="2023-05">Mei - {{now()->format('Y')}}</option>
-                    <option value="2023-06">Juni - {{now()->format('Y')}}</option>
-                    <option value="2023-07">Juli - {{now()->format('Y')}}</option>
-                    <option value="2023-08">Agustus - {{now()->format('Y')}}</option>
-                    <option value="2023-09">September - {{now()->format('Y')}}</option>
-                    <option value="2023-10">Oktober - {{now()->format('Y')}}</option>
-                    <option value="2023-11">November - {{now()->format('Y')}}</option>
-                    <option value="2023-12">Desember - {{now()->format('Y')}}</option>
+                    <option value="2024-01">Januari - {{now()->format('Y')}}</option>
+                    <option value="2024-02">Februari - {{now()->format('Y')}}</option>
+                    <option value="2024-03">Maret - {{now()->format('Y')}}</option>
+                    <option value="2024-04">April - {{now()->format('Y')}}</option>
+                    <option value="2024-05">Mei - {{now()->format('Y')}}</option>
+                    <option value="2024-06">Juni - {{now()->format('Y')}}</option>
+                    <option value="2024-07">Juli - {{now()->format('Y')}}</option>
+                    <option value="2024-08">Agustus - {{now()->format('Y')}}</option>
+                    <option value="2024-09">September - {{now()->format('Y')}}</option>
+                    <option value="2024-10">Oktober - {{now()->format('Y')}}</option>
+                    <option value="2024-11">November - {{now()->format('Y')}}</option>
+                    <option value="2024-12">Desember - {{now()->format('Y')}}</option>
                 </select>
             </div>
             <div class="filter">
@@ -52,17 +52,14 @@
 
                 <script>
                     document.addEventListener("DOMContentLoaded", () => {
-                        var resultMen = @json($resultMen);
-                        var resultWomen = @json($resultWomen);
-                        var datePerFiveDays = @json($datesPerFiveDays);
+                        var data = @json($resultOrder);
+                        console.log(data)
+                        var datePerFiveDays = @json($datesPerFiveMonths);
                         var options = {
                             series: [{
-                                name: 'Laki-laki',
-                                data: resultMen
-                            }, {
-                                name: 'Perempuan',
-                                data: resultWomen
-                            }, ],
+                                name: 'Transaksi Masuk',
+                                data: data
+                            }],
                             chart: {
                                 height: 350,
                                 type: 'area',
@@ -139,16 +136,12 @@
                             chart.updateOptions({
                                 xaxis: {
                                     type: 'date',
-                                    categories: data.datesPerFiveDays
+                                    categories: data.datesPerFiveMonths
                                 }
                             });
                             chart.updateSeries([{
-                                    data: data.resultMen
-                                },
-                                {
-                                    data: data.resultWomen
-                                }
-                            ]);
+                                data: data.resultOrder
+                            }, ]);
 
 
                         }
