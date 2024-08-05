@@ -89,4 +89,17 @@ class TableController extends Controller
             throw $e;
         }
     }
+
+    public function getAll(Request $request)
+    {
+        try {
+            $tables = Table::where('status', '1')->get();
+
+            return response()->json([
+                'data' => $tables
+            ]);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
 }

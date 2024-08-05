@@ -24,3 +24,6 @@ Route::get('/menu', 'App\Http\Controllers\Admin\MenuController@getAll');
 
 //Order
 Route::post('/order', 'App\Http\Controllers\Admin\OrderController@storeOrder');
+
+//Table 
+Route::get('/table', 'App\Http\Controllers\Admin\TableController@getAll');
