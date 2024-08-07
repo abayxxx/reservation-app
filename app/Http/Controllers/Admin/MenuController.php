@@ -118,7 +118,10 @@ class MenuController extends Controller
     public function getAll(Request $request)
     {
         try {
-            $response = Menu::all();
+            $response = Menu::query();
+
+
+            $response = $response->filter($request->all())->get();
 
             return response()
                 ->json([
