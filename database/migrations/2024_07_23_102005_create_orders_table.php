@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('menu_id')->constrained('menus');
             $table->foreignId('table_id')->constrained('tables');
             $table->integer('quantity');
-            $table->double('total', 10, 2);
+            $table->bigInteger('total');
             $table->timestamps();
         });
     }

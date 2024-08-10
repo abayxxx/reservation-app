@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('table_id')->constrained('tables');
             $table->dateTime('date');
-            $table->double('total', 10, 2);
+            $table->bigInteger('total');
             $table->timestamps();
         });
     }
