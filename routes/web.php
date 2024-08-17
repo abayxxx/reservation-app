@@ -109,6 +109,27 @@ Route::namespace("Admin")
         Route::get("/admin/reservation/print/{id}", "ReservationController@printReservation")->name(
             "reservation.print"
         );
+
+        //report
+        Route::get("/admin/report", "ReportController@index")->name(
+            "report"
+        );
+
+        Route::get("/admin/report/data", "ReportController@filterDate")->name(
+            "report.data"
+        );
+
+        Route::get("/admin/report/print", "ReportController@printReport")->name(
+            "report.print"
+        );
+
+        Route::get("/admin/report/excel", "ReportController@excelReport")->name(
+            "report.excel"
+        );
+
+        Route::get("/admin/report/csv", "ReportController@csvReport")->name(
+            "report.csv"
+        );
     });
 
 

@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="modal-title">
+                <h4 class="modal-title-detail" id="modal-title">
                     Detail Transaksi
                 </h4>
 
@@ -11,6 +11,11 @@
                 <div class="row">
                     <div class="col-md-6">
                         <table class="table table-bordered">
+                            <tr>
+                                <td>Nama Pelanggan</td>
+                                <td>:</td>
+                                <td id="customer_name"></td>
+                            </tr>
                             <tr>
                                 <td>Nomor Meja</td>
                                 <td>:</td>

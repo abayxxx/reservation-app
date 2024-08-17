@@ -40,6 +40,13 @@
              </a>
          </li>
 
+         <li class="nav-item">
+             <a class="nav-link {{ request()->is('admin/report') ? '' : 'collapsed' }}" href="{{ route('admin.report') }}">
+                 <i class="bi bi-people-fill"></i>
+                 <span>Data Laporan</span>
+             </a>
+         </li>
+
 
      </ul>
 

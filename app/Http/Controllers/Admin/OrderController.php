@@ -113,6 +113,7 @@ class OrderController extends Controller
                 'table_id' => 'required',
                 'menu_id' => 'required',
                 'quantity' => 'required',
+                'name' => 'required',
             ]);
 
             $menu = Menu::where('id', $validated['menu_id'])->first();

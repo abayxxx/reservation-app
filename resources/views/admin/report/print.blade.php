@@ -43,6 +43,7 @@
     <div class="content">
         <h1>Detail Transaksi</h1>
         <hr>
+        @foreach ($datas as $data)
         <div class="details">
             <div>
                 <span class="total">Nama Pelanggan:</span>
@@ -74,6 +75,7 @@
                 <span>{{ $data->total }}</span>
             </div>
         </div>
+        @endforeach
     </div>
 </body>
 

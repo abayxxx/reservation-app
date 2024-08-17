@@ -118,6 +118,7 @@
         $('#add').on('click', function() {
             $('.modal-title').html('Tambah Transaksi');
             $('#action').val('add');
+            $('#name').val('');
             $('#menu_id').val('');
             $('#table_id').val('');
             $('#total').val('');
@@ -172,6 +173,7 @@
                         }
 
                         $('#modal-feature').modal('hide');
+                        $('#name').removeClass('is-invalid');
                         $('#menu_id').removeClass('is-invalid');
                         $('#table_id').removeClass('is-invalid');
                         $('#total').removeClass('is-invalid');
@@ -202,6 +204,7 @@
                 success: function(data) {
                     console.log(data)
                     $('#modal-title').html('Detail Transaksi')
+                    $('#customer_name').html(data.name);
                     $('#table_no').html(data.table_id);
                     $('#date_detail').html(data.created_at);
                     $('#menu_detail').html(data.menu.name);

@@ -23,6 +23,7 @@ class OrderRequest extends FormRequest
     {
         return [
             //
+            'name' => 'required|string',
             'table_id' => 'required|exists:tables,id',
             'menu_id' => 'required|exists:menus,id',
             'quantity' => 'required|int'

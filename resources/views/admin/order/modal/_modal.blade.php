@@ -13,6 +13,12 @@
                     <div class="row">
                         <div class="col-12 mb-3">
                             <div class="form-group">
+                                <label for="name">Nama Pelanggan</label>
+                                <input type="text" name="name" id="name" class="form-control form-control-sm">
+                            </div>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <div class="form-group">
                                 <label>Nomor Meja</label>
                                 <div class="input-group mb-3">
                                     <select name="table_id" class="form-control" id="table_id" required>
