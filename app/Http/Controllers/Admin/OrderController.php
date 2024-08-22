@@ -21,7 +21,7 @@ class OrderController extends Controller
         $menus = Menu::all();
 
         if ($request->ajax()) {
-            $data = Order::query()->get();
+            $data = Order::query()->orderBy("id", "desc")->get();
 
             return DataTables::of($data)
                 ->addColumn('action', function ($data) {
@@ -61,10 +61,21 @@ class OrderController extends Controller
         try {
             $validated = $request->validated();
 
-            $menu = Menu::where('id', $validated['menu_id'])->first();
+            // Iterate over each menu item
+            foreach ($validated['menu_id'] as $index => $menuId) {
+                $menu = Menu::findOrFail($menuId);
+                $quantity = $validated['quantity'][$index];
+                $total = $menu->price * $quantity;
 
-            $validated['total'] = $menu->price * $validated['quantity'];
-            Order::create($validated);
+                // Create an individual order for each menu item
+                Order::create([
+                    'table_id' => $validated['table_id'],
+                    'menu_id' => $menuId,
+                    'quantity' => $quantity,
+                    'total' => $total,
+                    'name' => $validated['name'],
+                ]);
+            }
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -110,21 +121,40 @@ class OrderController extends Controller
     {
         try {
             $validated = $request->validate([
-                'table_id' => 'required',
-                'menu_id' => 'required',
-                'quantity' => 'required',
-                'name' => 'required',
+                'table_id' => 'required|exists:tables,id',
+                'menu_id' => 'required|array',
+                'menu_id.*' => 'required|exists:menus,id',
+                'quantity' => 'required|array',
+                'quantity.*' => 'required|integer|min:1',
+                'name' => 'required|string',
             ]);
 
-            $menu = Menu::where('id', $validated['menu_id'])->first();
+            $totalOrderAmount = 0;
 
-            $validated['total'] = $menu->price * $validated['quantity'];
-            Order::create($validated);
 
-            return response()
-                ->json([
-                    'success' => 'Data berhasil ditambahkan.',
+            // Iterate over each menu item
+            foreach ($validated['menu_id'] as $index => $menuId) {
+                $menu = Menu::findOrFail($menuId);
+                $quantity = $validated['quantity'][$index];
+                $total = $menu->price * $quantity;
+
+                // Create an individual order for each menu item
+                Order::create([
+                    'table_id' => $validated['table_id'],
+                    'menu_id' => $menuId,
+                    'quantity' => $quantity,
+                    'total' => $total,
+                    'name' => $validated['name'],
                 ]);
+
+                // Optionally sum up the total amount for all items
+                $totalOrderAmount += $total;
+            }
+
+            return response()->json([
+                'success' => 'Order has been successfully added.',
+                'total_amount' => $totalOrderAmount,
+            ]);
         } catch (\Throwable $th) {
             throw $th;
         }

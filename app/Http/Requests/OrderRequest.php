@@ -25,8 +25,10 @@ class OrderRequest extends FormRequest
             //
             'name' => 'required|string',
             'table_id' => 'required|exists:tables,id',
-            'menu_id' => 'required|exists:menus,id',
-            'quantity' => 'required|int'
+            'menu_id' => 'required|array',
+            'menu_id.*' => 'required|exists:menus,id',
+            'quantity' => 'required|array',
+            'quantity.*' => 'required|integer|min:1',
         ];
     }
 }

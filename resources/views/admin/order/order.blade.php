@@ -233,24 +233,24 @@
 
 
         //HANDLE MODAL Price
-        $('.quantity').keyup(function() {
-            var selectedValue = $('.menu_select').val();
-            var quantity = $('#quantity').val()
-            console.log(selectedValue, quantity)
-            $.ajax({
-                url: '/admin/menu/' + selectedValue,
-                dataType: 'JSON',
-                success: function(data) {
+        // $('.quantity').keyup(function() {
+        //     var selectedValue = $('.menu_select').val();
+        //     var quantity = $('#quantity').val()
+        //     console.log(selectedValue, quantity)
+        //     $.ajax({
+        //         url: '/admin/menu/' + selectedValue,
+        //         dataType: 'JSON',
+        //         success: function(data) {
 
-                    // $('#image').val(data.image);
-                    $('#total').val(data.price * quantity);
-                },
-                error: function(errors) {
-                    Swal.fire('Error!', 'Something went wrong!', 'error');
-                    $('#modal-feature').modal('hide');
-                }
-            });
-        });
+        //             // $('#image').val(data.image);
+        //             $('#total').val(data.price * quantity);
+        //         },
+        //         error: function(errors) {
+        //             Swal.fire('Error!', 'Something went wrong!', 'error');
+        //             $('#modal-feature').modal('hide');
+        //         }
+        //     });
+        // });
 
         //HANDLE DELETE DATA
         $(document).on('click', '.delete', function() {
@@ -309,6 +309,24 @@
             // Add Rp and ,00
             return 'Rp ' + numberString;
         }
+
+        window.calculateTotal = function() {
+            // Function content...
+            let total = 0;
+            document.querySelectorAll('.menu-item').forEach(function(item) {
+                const menuSelect = item.querySelector('.menu_select');
+                const quantityInput = item.querySelector('.quantity');
+                const price = parseFloat(menuSelect.selectedOptions[0].getAttribute('data-price'));
+                const quantity = parseInt(quantityInput.value);
+
+                if (!isNaN(price) && !isNaN(quantity)) {
+                    total += price * quantity;
+                }
+            });
+            document.getElementById('total').value = total;
+        };
+
+        // Function to calculate total price
 
     });
 </script>
