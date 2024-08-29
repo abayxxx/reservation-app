@@ -16,8 +16,8 @@ class Order extends Model
         return $this->belongsTo(Table::class);
     }
 
-    public function menu()
+    public function jurnalOrder()
     {
-        return $this->belongsTo(Menu::class);
+        return $this->hasMany(JurnalOrder::class);
     }
 }

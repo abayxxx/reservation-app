@@ -13,35 +13,38 @@ class ReportExport implements FromCollection, WithHeadings
      */
     public function collection()
     {
-        $datas = Order::all();
+        $datas = Order::query()->with(['table', 'jurnalOrder', 'jurnalOrder.menu'])->get();
 
         // Modify the data to be displayed in the PDF
-        $datas->map(function ($data) {
-            $data['price'] = 'Rp. ' . number_format($data->menu->price, 0, ',', '.');
-            $data['total'] = 'Rp. ' . number_format($data->total, 0, ',', '.');
-            $data['created_at'] = $data->created_at->format('Y-m-d H:i:s');
-            $data['table_id'] = $data->table->number;
-            $data['menu_id'] = $data->menu->name;
+        foreach ($datas as $key => $value) {
+            $data[$key]['created_at'] = $value->created_at->format('Y-m-d H:i:s');
+            $data[$key]['total'] = 'Rp. ' . number_format($value->total, 0, ',', '.');
 
-
-            unset($data['updated_at']);
-
-            return $data;
-        });
+            foreach ($value->jurnalOrder as $k => $v) {
+                $data[$key]['jurnalOrder'][$k]['menu']['price'] = 'Rp. ' . number_format($v->total, 0, ',', '.');
+            }
+        }
 
         $dataNew = [];
 
-        foreach ($datas as $data) {
-            $dataNew[] = [
-                'id' => $data->id,
-                'name' => $data->name,
-                'menu' => $data->menu_id,
-                'table' => $data->table_id,
-                'quantity' => $data->quantity,
-                'price' => $data->price,
-                'total' => $data->total,
-                'created_at' => $data->created_at,
-            ];
+        $menuString = '';
+        $jumlahMenu = 0;
+        $hargaMenu = 0;
+
+        foreach ($datas as $key => $value) {
+
+            foreach ($value['jurnalOrder'] as $k => $v) {
+                $menuString .= $v['menu']['name'] . ', ';
+                $jumlahMenu += $v['quantity'];
+                $hargaMenu += $v['total'];
+            }
+            $dataNew[$key]['ID'] = $value['id'];
+            $dataNew[$key]['Nama Pelanggan'] = $value['name'];
+            $dataNew[$key]['Nomor Meja'] = $value['table_id'];
+            $dataNew[$key]['Menu'] = $menuString;
+            $dataNew[$key]['Jumlah'] = $jumlahMenu;
+            $dataNew[$key]['Total Pesanan'] = "Rp. " . number_format($hargaMenu, 0, ',', '.');
+            $dataNew[$key]['Tanggal Pesan'] = $value['created_at'];
         }
 
         return collect($dataNew);
@@ -52,10 +55,9 @@ class ReportExport implements FromCollection, WithHeadings
         return [
             'ID',
             'Nama Pelanggan',
-            'Menu',
             'Nomor Meja',
+            'Menu',
             'Jumlah',
-            'Harga Menu',
             'Total Pesanan',
             'Tanggal Pesan',
         ];

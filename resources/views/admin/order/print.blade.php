@@ -53,16 +53,18 @@
                 <span>{{ $data->table_id }}</span>
             </div>
             <div>
-                <span class="total">Nama Menu:</span>
-                <span>{{ $data->menu->name }}</span>
+                <span class="total">Detail Menu:</span>
+                <br>
+                @foreach($data->jurnalOrder as $jurnal)
+                <span>Nama Menu: {{ $jurnal->menu->name }}</span>
+                <br>
+                <span>Harga: {{ $jurnal->menu->price }}</span>
+                <br>
+                @endforeach
             </div>
             <div>
                 <span class="total">Jumlah Menu:</span>
-                <span>{{ $data->quantity }}</span>
-            </div>
-            <div>
-                <span class="total">Harga Menu:</span>
-                <span>{{ $data->price }}</span>
+                <span>{{ count($data->jurnalOrder) }}</span>
             </div>
             <div>
                 <span class="total">Tanggal Transaksi:</span>

@@ -15,9 +15,22 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', function () {
-    return view('auth.login');
-})->middleware("redirectDashboard");
+    return view('welcome');
+});
 
+Route::get("/menu", "Admin\MenuController@menuGuest")->name(
+    "menu.guest"
+);
+
+Route::get("/detail-menu/{id}", "Admin\MenuController@menuGuestDetail")->name(
+    "detail.menu.guest"
+);
+
+Route::get('/order-menu', "Admin\OrderController@orderGuest")->name('order.guest');
+
+Route::post("/guest/order/store", "Admin\OrderController@store")->name(
+    "guest.order.store"
+);
 
 
 Route::namespace("Admin")

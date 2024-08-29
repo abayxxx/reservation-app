@@ -131,4 +131,29 @@ class MenuController extends Controller
             throw $th;
         }
     }
+
+    public function menuGuest(Request $request)
+    {
+        try {
+            $response = Menu::query();
+
+            $response = $response->get();
+
+
+            return view('menu', compact('response'));
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+    public function menuGuestDetail($id)
+    {
+        try {
+            $menu = Menu::query()->where('id', $id)->first();
+
+            return view('detail-menu', compact('menu'));
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
 }

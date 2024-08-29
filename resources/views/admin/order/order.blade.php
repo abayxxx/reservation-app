@@ -198,6 +198,7 @@
         //HANDLE MODAL EDIT
         $(document).on('click', '.detail', function() {
             let reservationid = $(this).attr('id');
+            menuDetailHTML = '';
             $.ajax({
                 url: '/admin/order/' + reservationid,
                 dataType: 'JSON',
@@ -207,15 +208,27 @@
                     $('#customer_name').html(data.name);
                     $('#table_no').html(data.table_id);
                     $('#date_detail').html(data.created_at);
-                    $('#menu_detail').html(data.menu.name);
-                    $('#price_detail').html(formatRupiah(data.menu.price));
-                    $('#quantity_detail').html(data.quantity)
+                    // $('#price_detail').html(formatRupiah(data.menu.price));
+                    $('#quantity_detail').html(data.jurnal_order.length);
                     $('#total_detail').html(formatRupiah(data.total));
                     $('#hidden_id').val(data.id);
                     $('#btn')
                         .removeClass('btn-success')
                         .addClass('btn-info')
                     $('#modal-detail').modal('show');
+
+                    data.jurnal_order.forEach(menu => {
+                        menuDetailHTML += `
+        <tr>
+            <td>Nama Menu: ${menu.menu.name}</td>
+            <td>Jumlah Menu: ${menu.quantity}</td>
+            <td>Harga: ${menu.menu.price}</td>
+        </tr>
+    `;
+                    });
+
+                    $('#menu_detail').html(menuDetailHTML);
+
                 },
                 error: function(errors) {
                     Swal.fire('Error!', 'Something went wrong!', 'error');

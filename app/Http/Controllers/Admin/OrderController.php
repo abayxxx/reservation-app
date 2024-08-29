@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\OrderRequest;
+use App\Models\JurnalOrder;
 use App\Models\Menu;
 use App\Models\Order;
 use App\Models\Table;
@@ -47,7 +48,7 @@ class OrderController extends Controller
     public function find($id)
     {
         try {
-            $order = Order::query()->with(['table', 'menu'])->where('id', $id)->first();
+            $order = Order::query()->with(['table', 'jurnalOrder', 'jurnalOrder.menu'])->where('id', $id)->first();
             $order->created_at = $order->created_at->format('Y-m-d H:i:s');
             return $order;
         } catch (\Exception $e) {
@@ -61,21 +62,35 @@ class OrderController extends Controller
         try {
             $validated = $request->validated();
 
+            $totalOrderAmount = 0;
+
+            $order = Order::create([
+                'table_id' => $validated['table_id'],
+                'quantity' => 0,
+                'total' => 0,
+                'name' => $validated['name'],
+            ]);
             // Iterate over each menu item
             foreach ($validated['menu_id'] as $index => $menuId) {
                 $menu = Menu::findOrFail($menuId);
                 $quantity = $validated['quantity'][$index];
                 $total = $menu->price * $quantity;
 
-                // Create an individual order for each menu item
-                Order::create([
-                    'table_id' => $validated['table_id'],
+                //stpre to jurnal order
+                JurnalOrder::create([
+                    'order_id' => $order->id,
                     'menu_id' => $menuId,
                     'quantity' => $quantity,
                     'total' => $total,
-                    'name' => $validated['name'],
                 ]);
+
+                // Optionally sum up the total amount for all items
+                $totalOrderAmount += $total;
             }
+
+            // Update the total amount for the order
+            $order->total = $totalOrderAmount;
+            $order->save();
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -100,11 +115,14 @@ class OrderController extends Controller
     {
         try {
             // Fetch the data you need to display in the PDF
-            $data = Order::find($id);
+            $data = Order::query()->with(['table', 'jurnalOrder', 'jurnalOrder.menu'])->where('id', $id)->first();
 
             $data['created_at'] = $data->created_at->format('Y-m-d H:i:s');
             $data['total'] = 'Rp. ' . number_format($data->total, 0, ',', '.');
-            $data['price'] = 'Rp. ' . number_format($data->menu->price, 0, ',', '.');
+
+            foreach ($data->jurnalOrder as $key => $value) {
+                $data['jurnalOrder'][$key]['menu']['price'] = 'Rp. ' . number_format($value->total, 0, ',', '.');
+            }
 
             // Load a view and pass the data to it
             $pdf = FacadePdf::loadView('admin.order.print', compact('data'));
@@ -131,6 +149,12 @@ class OrderController extends Controller
 
             $totalOrderAmount = 0;
 
+            $order = Order::create([
+                'table_id' => $validated['table_id'],
+                'quantity' => 0,
+                'name' => $validated['name'],
+            ]);
+
 
             // Iterate over each menu item
             foreach ($validated['menu_id'] as $index => $menuId) {
@@ -138,23 +162,38 @@ class OrderController extends Controller
                 $quantity = $validated['quantity'][$index];
                 $total = $menu->price * $quantity;
 
-                // Create an individual order for each menu item
-                Order::create([
-                    'table_id' => $validated['table_id'],
+                //stpre to jurnal order
+                JurnalOrder::create([
+                    'order_id' => $order->id,
                     'menu_id' => $menuId,
                     'quantity' => $quantity,
                     'total' => $total,
-                    'name' => $validated['name'],
                 ]);
 
                 // Optionally sum up the total amount for all items
                 $totalOrderAmount += $total;
             }
 
+            // Update the total amount for the order
+            $order->total = $totalOrderAmount;
+            $order->save();
+
             return response()->json([
                 'success' => 'Order has been successfully added.',
                 'total_amount' => $totalOrderAmount,
             ]);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+    public function orderGuest(Request $request)
+    {
+        try {
+            $tables = Table::where('status', '1')->get();
+            $menus = Menu::all();
+
+            return view('order', compact('tables', 'menus'));
         } catch (\Throwable $th) {
             throw $th;
         }

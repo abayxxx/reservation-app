@@ -53,16 +53,16 @@ class ReportController extends Controller
     {
         try {
             // Fetch the data you need to display in the PDF
-            $datas = Order::all();
+            $datas = Order::query()->with(['table', 'jurnalOrder', 'jurnalOrder.menu'])->get();
 
-            // Modify the data to be displayed in the PDF
-            $datas->map(function ($data) {
-                $data['created_at'] = $data->created_at->format('Y-m-d H:i:s');
-                $data['total'] = 'Rp. ' . number_format($data->total, 0, ',', '.');
-                $data['price'] = 'Rp. ' . number_format($data->menu->price, 0, ',', '.');
+            foreach ($datas as $key => $value) {
+                $data[$key]['created_at'] = $value->created_at->format('Y-m-d H:i:s');
+                $data[$key]['total'] = 'Rp. ' . number_format($value->total, 0, ',', '.');
 
-                return $data;
-            });
+                foreach ($value->jurnalOrder as $k => $v) {
+                    $data[$key]['jurnalOrder'][$k]['menu']['price'] = 'Rp. ' . number_format($v->total, 0, ',', '.');
+                }
+            }
 
             // Load a view and pass the data to it
             $pdf = FacadePdf::loadView('admin.report.print', compact('datas'));

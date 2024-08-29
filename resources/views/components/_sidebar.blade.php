@@ -12,12 +12,14 @@
 
          <li class="nav-heading">FEATURE</li>
 
+         @if(Auth::user()->id == 1)
          <li class="nav-item">
              <a class="nav-link {{ request()->is('admin/table') ? '' : 'collapsed' }}" href="{{ route('admin.table') }}">
                  <i class="bi bi-database-add"></i>
                  <span>Data Meja</span>
              </a>
          </li>
+         @endif
 
          <li class="nav-item">
              <a class="nav-link {{ request()->is('admin/menu') ? '' : 'collapsed' }}" href="{{ route('admin.menu') }}">
@@ -33,19 +35,23 @@
              </a>
          </li>
 
+         @if(Auth::user()->id == 1)
          <li class="nav-item">
              <a class="nav-link {{ request()->is('admin/reservation') ? '' : 'collapsed' }}" href="{{ route('admin.reservation') }}">
                  <i class="bi bi-people-fill"></i>
                  <span>Data Reservasi</span>
              </a>
          </li>
+         @endif
 
+         @if(Auth::user()->id == 1)
          <li class="nav-item">
              <a class="nav-link {{ request()->is('admin/report') ? '' : 'collapsed' }}" href="{{ route('admin.report') }}">
                  <i class="bi bi-people-fill"></i>
                  <span>Data Laporan</span>
              </a>
          </li>
+         @endif
 
 
      </ul>

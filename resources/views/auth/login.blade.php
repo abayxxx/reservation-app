@@ -1,7 +1,7 @@
 @extends('layouts.guest')
 @section('title', 'Login')
 @section('content')
-<section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4" style="background-image:url('/../landing_page/images/image.png')">
+<section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
