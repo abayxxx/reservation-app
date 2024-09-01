@@ -199,10 +199,24 @@
         $(document).on('click', '.detail', function() {
             let reservationid = $(this).attr('id');
             menuDetailHTML = '';
+            $('#menu_detail').html(menuDetailHTML);
+
             $.ajax({
                 url: '/admin/order/' + reservationid,
                 dataType: 'JSON',
+                beforeSend: function() {
+                    Swal.fire({
+                        title: 'Please Wait..!',
+                        text: 'Is working..',
+                        icon: 'info',
+                        didOpen: () => {
+                            Swal.showLoading()
+                        },
+                    })
+                },
                 success: function(data) {
+
+                    Swal.close();
                     console.log(data)
                     $('#modal-title').html('Detail Transaksi')
                     $('#customer_name').html(data.name);
@@ -233,6 +247,7 @@
                 error: function(errors) {
                     Swal.fire('Error!', 'Something went wrong!', 'error');
                     $('#modal-detail').modal('hide');
+                    Swal.hideLoading();
                 }
             });
         });

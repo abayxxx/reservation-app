@@ -152,6 +152,7 @@ class OrderController extends Controller
             $order = Order::create([
                 'table_id' => $validated['table_id'],
                 'quantity' => 0,
+                'total' => 0,
                 'name' => $validated['name'],
             ]);
 
