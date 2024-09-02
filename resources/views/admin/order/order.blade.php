@@ -22,6 +22,7 @@
                                     <tr>
                                         <th>No</th>
                                         <th>ID Transaksi</th>
+                                        <th>ID Meja</th>
                                         <th>Tanggal</th>
                                         <th>Total</th>
                                         <th>Actions</th>
@@ -99,6 +100,10 @@
                 {
                     data: 'id',
                     name: 'id'
+                },
+                {
+                    data: 'table_id',
+                    name: 'table_id'
                 },
                 {
                     data: 'created_at',
